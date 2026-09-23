@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Watchers Guild</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0b0806;
+    --panel:#171009;
+    --panel-2:#1f1610;
+    --bronze:#5a3d1e;
+    --bronze-light:#8a642f;
+    --gold:#c9a44c;
+    --gold-bright:#e8c874;
+    --parchment:#d9cdb3;
+    --parchment-dim:#a89a80;
+    --blood:#6e1f1f;
+    --unique:#d9791f;
+    --unique-glow:#ffab4a;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top, #1a120b 0%, var(--void) 60%);
+    color:var(--parchment);
+    font-family:'EB Garamond', serif;
+    font-size:18px;
+    line-height:1.6;
+  }
+  h1,h2,h3,.rune{
+    font-family:'Cinzel Decorative', serif;
+    color:var(--gold-bright);
+    letter-spacing:.03em;
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  .ornate-border{
+    border:2px solid var(--bronze-light);
+    box-shadow:
+      0 0 0 1px #000,
+      0 0 0 5px var(--panel),
+      0 0 0 6px var(--bronze),
+      inset 0 0 30px rgba(0,0,0,.6);
+    background:var(--panel);
+  }
+
+  header{
+    max-width:900px;
+    margin:0 auto;
+    padding:70px 24px 50px;
+    text-align:center;
+  }
+  .sigil{
+    width:64px;height:64px;margin:0 auto 22px;
+    border:2px solid var(--gold);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle, var(--bronze) 0%, var(--panel) 75%);
+    box-shadow:0 0 18px rgba(201,164,76,.35);
+    font-family:'Cinzel Decorative',serif;
+    color:var(--gold-bright);
+    font-size:26px;
+  }
+  header h1{font-size:clamp(2.2rem, 6vw, 3.4rem);}
+  header p.tagline{
+    color:var(--parchment-dim);
+    font-style:italic;
+    margin-top:14px;
+    font-size:1.15rem;
+  }
+  .cta-row{
+    margin-top:34px;
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-block;
+    padding:13px 30px;
+    font-family:'Cinzel Decorative',serif;
+    font-size:.85rem;
+    letter-spacing:.08em;
+    border:1px solid var(--bronze-light);
+    background:linear-gradient(180deg,#241a10,#140d08);
+    color:var(--parchment);
+    cursor:pointer;
+    position:relative;
+    transition:box-shadow .25s ease, color .25s ease, border-color .25s ease;
+  }
+  .btn:hover, .btn:focus-visible{
+    color:var(--unique-glow);
+    border-color:var(--unique);
+    box-shadow:0 0 14px rgba(217,121,31,.55), inset 0 0 10px rgba(217,121,31,.15);
+    outline:none;
+  }
+  .btn.primary{
+    border-color:var(--gold);
+    color:var(--gold-bright);
+  }
+  .btn.primary:hover, .btn.primary:focus-visible{
+    color:var(--unique-glow);
+    border-color:var(--unique);
+  }
+
+  section{max-width:1000px;margin:0 auto;padding:10px 24px 70px;}
+  .section-head{
+    text-align:center;
+    margin-bottom:36px;
+  }
+  .section-head h2{font-size:1.7rem;}
+  .section-head .rule{
+    width:80px;height:2px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin:14px auto 0;
+  }
+
+  /* Realms grid - skill-tree style nodes */
+  .realms{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
+    gap:20px;
+  }
+  .realm{
+    padding:22px 18px;
+    text-align:center;
+    transition:transform .2s ease, box-shadow .25s ease;
+  }
+  .realm:hover{
+    transform:translateY(-4px);
+    box-shadow:
+      0 0 0 1px #000,
+      0 0 0 5px var(--panel),
+      0 0 0 6px var(--unique),
+      0 0 20px rgba(217,121,31,.35);
+  }
+  .realm .icon{font-size:1.8rem;margin-bottom:10px;display:block;}
+  .realm h3{font-size:1.05rem;color:var(--parchment);font-family:'EB Garamond',serif;font-weight:600;}
+  .realm p{color:var(--parchment-dim);font-size:.92rem;margin:8px 0 0;}
+
+  /* Video shelf - inventory slots */
+  .shelf{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:18px;
+  }
+  .item-card{
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .item-card .rarity{
+    font-size:.72rem;
+    letter-spacing:.1em;
+    color:var(--unique);
+    font-family:'Cinzel Decorative',serif;
+  }
+  .item-card h3{
+    font-family:'EB Garamond',serif;
+    font-weight:600;
+    font-size:1.15rem;
+    color:var(--gold-bright);
+  }
+  .item-card p{color:var(--parchment-dim);font-size:.95rem;margin:0;}
+  .item-card .watch{
+    margin-top:auto;
+    font-size:.85rem;
+    color:var(--parchment-dim);
+    border-top:1px solid var(--bronze);
+    padding-top:10px;
+  }
+  .item-card:hover .watch{color:var(--unique-glow);}
+
+  footer{
+    text-align:center;
+    padding:50px 24px 70px;
+    color:var(--parchment-dim);
+    font-size:.9rem;
+  }
+  footer .rule{
+    width:120px;height:1px;
+    background:var(--bronze-light);
+    margin:0 auto 24px;
+  }
+  footer a:hover{color:var(--unique-glow);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sigil">☩</div>
+  <h1>The Watchers Guild</h1>
+  <p class="tagline">Reviews, recaps, and reckonings from the realms of screen and story.</p>
+  <div class="cta-row">
+    <!-- Replace href with your real channel URL -->
+    <a class="btn primary" href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">Join the Guild</a>
+    <a class="btn" href="#chronicles">Latest Chronicles</a>
+  </div>
+</header>
+
+<section id="realms">
+  <div class="section-head">
+    <h2>Realms Under Watch</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="realms">
+    <div class="realm ornate-border">
+      <span class="icon">⚔</span>
+      <h3>Star Wars</h3>
+      <p>A galaxy picked apart, one hot take at a time.</p>
+    </div>
+    <div class="realm ornate-border">
+      <span class="icon">🖖</span>
+      <h3>Star Trek</h3>
+      <p>Boldly critiquing what no fan has critiqued enough.</p>
+    </div>
+    <div class="realm ornate-border">
+      <span class="icon">🐉</span>
+      <h3>House of the Dragon</h3>
+      <p>Dragons, dynasties, and the occasional disappointment.</p>
+    </div>
+    <div class="realm ornate-border">
+      <span class="icon">🌆</span>
+      <h3>Dead City</h3>
+      <p>Walking through the wreckage of a franchise, on foot.</p>
+    </div>
+  </div>
+</section>
+
+<section id="chronicles">
+  <div class="section-head">
+    <h2>Latest Chronicles</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="shelf">
+    <div class="item-card ornate-border">
+      <span class="rarity">Weekly Recap</span>
+      <h3>Starfleet Academy — This Week's Ruling</h3>
+      <p>The flagship recap series, back with a fresh verdict.</p>
+      <span class="watch">Watch on YouTube →</span>
+    </div>
+    <div class="item-card ornate-border">
+      <span class="rarity">Review</span>
+      <h3>Rings of Power — Season Watch</h3>
+      <p>Middle-earth, reassessed with no patience for filler.</p>
+      <span class="watch">Watch on YouTube →</span>
+    </div>
+    <div class="item-card ornate-border">
+      <span class="rarity">Reaction</span>
+      <h3>What The Discourse Got Wrong</h3>
+      <p>Reviewing the reviews — where the takes get taken apart.</p>
+      <span class="watch">Watch on YouTube →</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="rule"></div>
+  <p class="rune">THE WATCHERS GUILD</p>
+  <p><a href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">YouTube</a> &nbsp;·&nbsp; <a href="#">Twitter / X</a> &nbsp;·&nbsp; <a href="#">Discord</a></p>
+</footer>
+
+</body>
+</html>
