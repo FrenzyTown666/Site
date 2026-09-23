@@ -10,39 +10,65 @@
 <style>
   :root{
     --void:#050302;
-    --panel:#120c07;
-    --leather:#221507;
+    --panel:#140d07;
+    --leather:#241706;
     --bronze:#4a3218;
-    --bronze-light:#7d5a28;
+    --bronze-light:#8a6a30;
     --gold:#c9a227;
     --gold-bright:#f0c65e;
     --parchment:#d9cdb3;
     --parchment-dim:#9c8e74;
-    --unique:#e2711d;   /* orange = unique-tier items in D2 */
-    --rare:#c9a227;      /* gold = rare */
-    --set:#3f9c4a;        /* green = set items */
-    --magic:#5d7fd1;      /* blue = magic items */
+    --unique:#e2711d;
+    --rare:#c9a227;
+    --set:#3f9c4a;
+    --magic:#5d7fd1;
     --orb-red:#7a0f0f;
     --orb-blue:#0f3f7a;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
+
+  /* --- textured D2-style background: stone grain + faint inventory grid + torch vignette --- */
   body{
     margin:0;
-    background:
-      radial-gradient(ellipse 70% 50% at 50% 0%, #241608 0%, transparent 60%),
-      radial-gradient(ellipse 80% 60% at 50% 100%, #1a0f05 0%, transparent 55%),
-      var(--void);
     color:var(--parchment);
     font-family:'EB Garamond', serif;
     font-size:18px;
     line-height:1.6;
+    background-color:var(--void);
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 0%, rgba(226,113,29,.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 15%, rgba(93,127,209,.05) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, rgba(201,162,39,.035) 0px, rgba(201,162,39,.035) 1px, transparent 1px, transparent 64px),
+      repeating-linear-gradient(90deg, rgba(201,162,39,.035) 0px, rgba(201,162,39,.035) 1px, transparent 1px, transparent 64px),
+      linear-gradient(180deg, #0c0805, #050302 20%, #050302 80%, #0a0603);
+    background-attachment:fixed;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    opacity:.5; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
   }
   a{color:inherit;text-decoration:none;}
   h2,h3{font-family:'Cinzel',serif; margin:0; letter-spacing:.04em;}
 
-  /* --- socket divider, the little row of studs between sections --- */
-  .sockets{display:flex;justify-content:center;gap:14px;margin:0 0 28px;}
+  /* --- nav --- */
+  nav{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+    background:linear-gradient(180deg, rgba(10,6,3,.95), rgba(10,6,3,.85));
+    border-bottom:1px solid var(--bronze);
+    backdrop-filter:blur(4px);
+  }
+  nav .brand{font-family:'Cinzel',serif;color:var(--gold-bright);font-weight:700;letter-spacing:.08em;font-size:.95rem;}
+  nav ul{list-style:none;display:flex;gap:26px;margin:0;padding:0;}
+  nav a{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.06em;color:var(--parchment-dim);transition:color .2s;}
+  nav a:hover{color:var(--unique);}
+  @media (max-width:640px){ nav ul{gap:14px;} nav a{font-size:.68rem;} }
+
+  .sockets{display:flex;justify-content:center;gap:14px;margin:0 0 30px;}
   .sockets span{
     width:9px;height:9px;border-radius:50%;
     background:radial-gradient(circle at 35% 30%, #4a3218, #0a0603 75%);
@@ -51,26 +77,22 @@
   }
 
   .item-frame{
+    position:relative;
     border:1px solid var(--bronze-light);
-    box-shadow:
-      0 0 0 1px #000,
-      0 0 0 5px var(--panel),
-      0 0 0 6px var(--bronze),
-      inset 0 0 24px rgba(0,0,0,.65);
+    box-shadow:0 0 0 1px #000, 0 0 0 5px var(--panel), 0 0 0 6px var(--bronze), inset 0 0 26px rgba(0,0,0,.7);
     background:linear-gradient(180deg, var(--panel), var(--leather));
   }
-
-  /* --- hero --- */
-  header{
-    max-width:900px;
-    margin:0 auto;
-    padding:70px 24px 40px;
-    text-align:center;
-    position:relative;
+  /* corner studs, a real D2 tooltip tell */
+  .item-frame::before, .item-frame::after{
+    content:""; position:absolute; width:7px; height:7px; border-radius:50%;
+    background:var(--gold); box-shadow:0 0 5px rgba(201,162,39,.7);
+    top:-9px; left:-9px;
   }
+  .item-frame::after{ left:auto; right:-9px; }
+
+  header{max-width:920px;margin:0 auto;padding:64px 24px 40px;text-align:center;position:relative;}
   .crest{
-    width:70px;height:70px;margin:0 auto 20px;
-    border-radius:50%;
+    width:70px;height:70px;margin:0 auto 20px;border-radius:50%;
     border:2px solid var(--gold);
     background:radial-gradient(circle, var(--bronze) 0%, var(--panel) 70%);
     box-shadow:0 0 22px rgba(201,162,39,.4), inset 0 0 10px #000;
@@ -78,129 +100,109 @@
   }
   .crest svg{width:34px;height:34px;fill:var(--gold-bright);}
   header h1{
-    font-family:'UnifrakturMaguntia', serif;
-    font-weight:400;
-    font-size:clamp(2.6rem, 8vw, 4.4rem);
-    color:var(--gold-bright);
-    text-shadow:0 0 18px rgba(226,113,29,.35), 0 2px 0 #000;
-    margin:0;
+    font-family:'UnifrakturMaguntia', serif; font-weight:400;
+    font-size:clamp(2.6rem, 8vw, 4.4rem); color:var(--gold-bright);
+    text-shadow:0 0 18px rgba(226,113,29,.35), 0 2px 0 #000; margin:0;
   }
-  header p.tagline{
-    color:var(--parchment-dim);
-    font-style:italic;
-    margin-top:16px;
-    font-size:1.15rem;
-  }
-  .orb-row{
-    display:flex;align-items:center;justify-content:center;gap:30px;
-    margin-top:36px;
-  }
-  .orb{
-    width:56px;height:56px;border-radius:50%;
-    border:2px solid var(--bronze-light);
-    flex-shrink:0;
-  }
+  header p.tagline{color:var(--parchment-dim);font-style:italic;margin-top:16px;font-size:1.15rem;}
+  .orb-row{display:flex;align-items:center;justify-content:center;gap:30px;margin-top:36px;}
+  .orb{width:56px;height:56px;border-radius:50%;border:2px solid var(--bronze-light);flex-shrink:0;}
   .orb.red{background:radial-gradient(circle at 40% 30%, #d84a2a, var(--orb-red) 70%);box-shadow:0 0 14px rgba(216,74,42,.5);}
   .orb.blue{background:radial-gradient(circle at 40% 30%, #4a8fd8, var(--orb-blue) 70%);box-shadow:0 0 14px rgba(74,143,216,.5);}
   .cta-stack{display:flex;flex-direction:column;gap:14px;align-items:center;}
   .btn{
-    display:inline-block;
-    padding:13px 34px;
-    font-family:'Cinzel',serif;
-    font-weight:600;
-    font-size:.85rem;
-    letter-spacing:.08em;
-    border:1px solid var(--bronze-light);
-    background:linear-gradient(180deg,#2a1d10,#140d08);
-    color:var(--gold-bright);
+    display:inline-block;padding:13px 34px;font-family:'Cinzel',serif;font-weight:600;
+    font-size:.85rem;letter-spacing:.08em;border:1px solid var(--bronze-light);
+    background:linear-gradient(180deg,#2a1d10,#140d08);color:var(--gold-bright);
     transition:box-shadow .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;
   }
   .btn:hover, .btn:focus-visible{
-    color:#fff;
-    border-color:var(--unique);
+    color:#fff;border-color:var(--unique);
     box-shadow:0 0 16px rgba(226,113,29,.6), inset 0 0 10px rgba(226,113,29,.2);
-    transform:translateY(-1px);
-    outline:none;
+    transform:translateY(-1px); outline:none;
   }
 
-  section{max-width:1020px;margin:0 auto;padding:20px 24px 60px;}
+  section{max-width:1040px;margin:0 auto;padding:20px 24px 60px;}
   .section-head{text-align:center;margin-bottom:30px;}
   .section-head h2{font-size:1.6rem;color:var(--gold-bright);}
-  .section-head .rule{
-    width:90px;height:2px;
-    background:linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin:14px auto 0;
-  }
+  .section-head p.sub{color:var(--parchment-dim);font-style:italic;font-size:.95rem;margin-top:8px;}
+  .section-head .rule{width:90px;height:2px;background:linear-gradient(90deg, transparent, var(--gold), transparent);margin:14px auto 0;}
 
-  /* --- realms: real links, rarity-coded borders --- */
   .realms{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:20px;}
-  .realm{
-    padding:24px 18px;
-    text-align:center;
-    display:block;
-    cursor:pointer;
-    transition:transform .2s ease, box-shadow .25s ease;
-    --rarity: var(--rare);
-  }
-  .realm:hover, .realm:focus-visible{
-    transform:translateY(-4px);
-    box-shadow:
-      0 0 0 1px #000, 0 0 0 5px var(--panel), 0 0 0 6px var(--rarity),
-      0 0 22px var(--rarity);
-    outline:none;
-  }
-  .realm .badge{
-    width:52px;height:52px;margin:0 auto 12px;
-    border-radius:50%;
-    border:2px solid var(--rarity);
-    background:radial-gradient(circle, #1c1208, #0a0603 70%);
-    display:flex;align-items:center;justify-content:center;
-  }
+  .realm{padding:24px 18px;text-align:center;display:block;cursor:pointer;transition:transform .2s ease, box-shadow .25s ease;--rarity: var(--rare);}
+  .realm:hover, .realm:focus-visible{transform:translateY(-4px);box-shadow:0 0 0 1px #000,0 0 0 5px var(--panel),0 0 0 6px var(--rarity),0 0 22px var(--rarity);outline:none;}
+  .realm .badge{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;border:2px solid var(--rarity);background:radial-gradient(circle, #1c1208, #0a0603 70%);display:flex;align-items:center;justify-content:center;}
   .realm .badge svg{width:26px;height:26px;fill:var(--rarity);}
   .realm h3{font-size:1.02rem;color:var(--parchment);font-family:'EB Garamond',serif;font-weight:600;}
-  .realm .rarity-label{
-    display:block;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;
-    color:var(--rarity); margin-top:6px;
-  }
+  .realm .rarity-label{display:block;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;color:var(--rarity);margin-top:6px;}
   .realm p{color:var(--parchment-dim);font-size:.9rem;margin:8px 0 0;}
-  .realm.unique{--rarity: var(--unique);}
   .realm.rare{--rarity: var(--rare);}
-  .realm.set{--rarity: var(--set);}
   .realm.magic{--rarity: var(--magic);}
+  .realm.empty{opacity:.55;border-style:dashed;}
+  .realm.empty p{font-style:italic;}
 
-  /* --- chronicles: honest placeholders --- */
-  .shelf{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px,1fr));gap:18px;}
-  .item-card{padding:22px;display:flex;flex-direction:column;gap:10px;}
-  .item-card .slot-icon{font-size:.7rem;letter-spacing:.1em;font-family:'Cinzel',serif;color:var(--parchment-dim);}
-  .item-card h3{font-family:'EB Garamond',serif;font-weight:600;font-size:1.1rem;color:var(--parchment-dim);font-style:italic;}
-  .item-card p{color:var(--parchment-dim);font-size:.92rem;margin:0;}
-  .placeholder-note{
-    text-align:center;color:var(--parchment-dim);font-style:italic;font-size:.95rem;margin-top:24px;
+  /* --- watch list / journal: this is the section you'll actually write in --- */
+  .watchlist{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px,1fr));gap:22px;}
+  .watch-card{padding:0;overflow:hidden;display:flex;flex-direction:column;}
+  .watch-img{
+    height:150px;
+    background:
+      repeating-linear-gradient(45deg, #1a1108, #1a1108 10px, #140d07 10px, #140d07 20px);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--parchment-dim);font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.08em;
+    border-bottom:1px solid var(--bronze);
   }
+  /* To add a real image: replace the .watch-img div's content with
+     <img src="your-image.jpg" alt="..." style="width:100%;height:100%;object-fit:cover;"> */
+  .watch-body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .status{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;}
+  .status.upcoming{color:var(--magic);}
+  .status.watching{color:var(--rare);}
+  .status.reviewed{color:var(--unique);}
+  .watch-body h3{font-size:1.1rem;color:var(--gold-bright);}
+  .watch-body p{color:var(--parchment-dim);font-size:.92rem;margin:0;}
+  .watch-body .link{margin-top:auto;font-size:.85rem;border-top:1px solid var(--bronze);padding-top:10px;}
+  .watch-card:hover .link a{color:var(--unique);}
+
+  .about{display:flex;gap:26px;align-items:center;flex-wrap:wrap;padding:28px;}
+  .about .avatar{width:84px;height:84px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;background:radial-gradient(circle, var(--bronze), var(--panel) 75%);}
+  .about p{color:var(--parchment-dim);margin:0;font-size:.98rem;}
+  .about h3{color:var(--gold-bright);margin-bottom:8px;}
 
   footer{text-align:center;padding:50px 24px 70px;color:var(--parchment-dim);font-size:.9rem;}
-  footer p.rune{font-family:'Cinzel',serif;color:var(--gold);letter-spacing:.1em;}
-  footer a:hover{color:var(--unique);}
+  footer p.rune{font-family:'Cinzel',serif;color:var(--gold);letter-spacing:.1em;margin-bottom:16px;}
+  .social-row{display:flex;justify-content:center;gap:22px;}
+  .social-row a{width:38px;height:38px;border:1px solid var(--bronze-light);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:border-color .2s, box-shadow .2s;}
+  .social-row a:hover{border-color:var(--unique);box-shadow:0 0 10px rgba(226,113,29,.5);}
+  .social-row svg{width:16px;height:16px;fill:var(--parchment-dim);}
+  .social-row a:hover svg{fill:var(--unique);}
 
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
 </head>
 <body>
 
+<nav>
+  <span class="brand">THE WATCHERS GUILD</span>
+  <ul>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#watchlist">Watch List</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">YouTube</a></li>
+  </ul>
+</nav>
+
 <header>
   <div class="crest">
-    <!-- simple rune-like sigil, not an emoji -->
     <svg viewBox="0 0 24 24"><path d="M12 1 L15 9 L23 9 L16.5 14 L19 22 L12 17 L5 22 L7.5 14 L1 9 L9 9 Z"/></svg>
   </div>
   <h1>The Watchers Guild</h1>
   <p class="tagline">Reviews, recaps, and reckonings from the realms of screen and story.</p>
-
   <div class="orb-row">
     <div class="orb red" aria-hidden="true"></div>
     <div class="cta-stack">
-      <!-- Replace with your real channel URL -->
       <a class="btn" href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">Join the Guild</a>
-      <a class="btn" href="#chronicles">Latest Chronicles</a>
+      <a class="btn" href="#watchlist">The Watch List</a>
     </div>
     <div class="orb blue" aria-hidden="true"></div>
   </div>
@@ -208,70 +210,98 @@
 
 <div class="sockets"><span></span><span></span><span></span><span></span><span></span></div>
 
-<section id="realms">
+<section id="coverage">
   <div class="section-head">
-    <h2>Realms Under Watch</h2>
+    <h2>Coverage</h2>
     <div class="rule"></div>
   </div>
   <div class="realms">
-    <!-- Each realm links to a channel-scoped YouTube search. Swap the query or URL for a real playlist link once you have one. -->
-    <a class="realm item-frame unique" href="https://www.youtube.com/@TheWatchersGuild/search?query=Star%20Wars" target="_blank" rel="noopener">
-      <span class="badge"><svg viewBox="0 0 24 24"><path d="M3 21 L21 3 L19 1 L1 19 Z M17 5 L19 7"/></svg></span>
-      <h3>Star Wars</h3>
-      <span class="rarity-label">Unique</span>
-      <p>A galaxy picked apart, one hot take at a time.</p>
-    </a>
     <a class="realm item-frame rare" href="https://www.youtube.com/@TheWatchersGuild/search?query=Star%20Trek" target="_blank" rel="noopener">
       <span class="badge"><svg viewBox="0 0 24 24"><path d="M12 2 L20 8 L20 16 L12 22 L4 16 L4 8 Z M12 8 L12 22 M4 8 L12 14 L20 8"/></svg></span>
       <h3>Star Trek</h3>
       <span class="rarity-label">Rare</span>
       <p>Boldly critiquing what no fan has critiqued enough.</p>
     </a>
-    <a class="realm item-frame set" href="https://www.youtube.com/@TheWatchersGuild/search?query=House%20of%20the%20Dragon" target="_blank" rel="noopener">
-      <span class="badge"><svg viewBox="0 0 24 24"><path d="M2 18 Q6 6 12 12 Q18 6 22 18 Q14 12 12 18 Q10 12 2 18 Z"/></svg></span>
-      <h3>House of the Dragon</h3>
-      <span class="rarity-label">Set Item</span>
-      <p>Dragons, dynasties, and the occasional disappointment.</p>
-    </a>
-    <a class="realm item-frame magic" href="https://www.youtube.com/@TheWatchersGuild/search?query=Dead%20City" target="_blank" rel="noopener">
-      <span class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13 L9 20 M15 13 L15 20 M7 6 L5 3 M17 6 L19 3"/></svg></span>
-      <h3>Dead City</h3>
-      <span class="rarity-label">Magic</span>
-      <p>Walking through the wreckage of a franchise, on foot.</p>
-    </a>
+    <!-- Duplicate the block above for each real thing you cover. Two open slots below as a placeholder — tell me what to put here. -->
+    <div class="realm item-frame empty">
+      <span class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></span>
+      <h3>— Open Slot —</h3>
+      <span class="rarity-label">Add a category</span>
+      <p>Tell me what else you cover and I'll fill this in.</p>
+    </div>
+    <div class="realm item-frame empty">
+      <span class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></span>
+      <h3>— Open Slot —</h3>
+      <span class="rarity-label">Add a category</span>
+      <p>Tell me what else you cover and I'll fill this in.</p>
+    </div>
   </div>
 </section>
 
 <div class="sockets"><span></span><span></span><span></span><span></span><span></span></div>
 
-<section id="chronicles">
+<section id="watchlist">
   <div class="section-head">
-    <h2>Latest Chronicles</h2>
+    <h2>The Watch List</h2>
+    <p class="sub">What's coming up, what I'm watching, and what's already been judged.</p>
     <div class="rule"></div>
   </div>
-  <div class="shelf">
-    <div class="item-card item-frame">
-      <span class="slot-icon">EMPTY SLOT</span>
-      <h3>— Your latest video title —</h3>
-      <p>Swap this card for your real upload: title, one-line description, and a link.</p>
+  <div class="watchlist">
+    <div class="watch-card item-frame">
+      <div class="watch-img">IMAGE SLOT</div>
+      <div class="watch-body">
+        <span class="status upcoming">Upcoming</span>
+        <h3>— Show or movie title —</h3>
+        <p>A line on why you're looking forward to it (or dreading it).</p>
+        <span class="link">Review coming soon</span>
+      </div>
     </div>
-    <div class="item-card item-frame">
-      <span class="slot-icon">EMPTY SLOT</span>
-      <h3>— Your latest video title —</h3>
-      <p>Swap this card for your real upload: title, one-line description, and a link.</p>
+    <div class="watch-card item-frame">
+      <div class="watch-img">IMAGE SLOT</div>
+      <div class="watch-body">
+        <span class="status watching">Watching</span>
+        <h3>— Show or movie title —</h3>
+        <p>Where you're at with it so far.</p>
+        <span class="link">Review coming soon</span>
+      </div>
     </div>
-    <div class="item-card item-frame">
-      <span class="slot-icon">EMPTY SLOT</span>
-      <h3>— Your latest video title —</h3>
-      <p>Swap this card for your real upload: title, one-line description, and a link.</p>
+    <div class="watch-card item-frame">
+      <div class="watch-img">IMAGE SLOT</div>
+      <div class="watch-body">
+        <span class="status reviewed">Reviewed</span>
+        <h3>— Show or movie title —</h3>
+        <p>One-line verdict.</p>
+        <span class="link"><a href="#" target="_blank" rel="noopener">Watch the review →</a></span>
+      </div>
     </div>
   </div>
-  <p class="placeholder-note">These are placeholders — send me your real video titles/links and I'll drop them in, or I can wire this section to auto-pull your latest uploads.</p>
+</section>
+
+<div class="sockets"><span></span><span></span><span></span><span></span><span></span></div>
+
+<section id="about">
+  <div class="about item-frame">
+    <div class="avatar"></div>
+    <div>
+      <h3>About the Guildmaster</h3>
+      <p>A line or two about who's behind the channel and why you started reviewing. Replace this with your own words.</p>
+    </div>
+  </div>
 </section>
 
 <footer>
   <p class="rune">THE WATCHERS GUILD</p>
-  <p><a href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">YouTube</a> &nbsp;·&nbsp; <a href="#">Twitter / X</a> &nbsp;·&nbsp; <a href="#">Discord</a></p>
+  <div class="social-row">
+    <a href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24"><path d="M23 12s0-3.6-.46-5.3a3 3 0 0 0-2.1-2.1C18.7 4 12 4 12 4s-6.7 0-8.44.6a3 3 0 0 0-2.1 2.1C1 8.4 1 12 1 12s0 3.6.46 5.3a3 3 0 0 0 2.1 2.1C5.3 20 12 20 12 20s6.7 0 8.44-.6a3 3 0 0 0 2.1-2.1C23 15.6 23 12 23 12ZM10 15.5v-7l6 3.5Z"/></svg>
+    </a>
+    <a href="#" aria-label="Twitter / X">
+      <svg viewBox="0 0 24 24"><path d="M4 4 L20 20 M20 4 L4 20"/></svg>
+    </a>
+    <a href="#" aria-label="Discord">
+      <svg viewBox="0 0 24 24"><path d="M6 8 C9 5 15 5 18 8 L19 16 C16 18 14 18.5 13 17 L14 15.5 C11.5 16.5 9.5 16.3 8 15 L9 17 C8 18.5 6 18 5 16 Z"/></svg>
+    </a>
+  </div>
 </footer>
 
 </body>
