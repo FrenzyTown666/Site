@@ -6,210 +6,207 @@
 <title>The Watchers Guild</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#0b0806;
-    --panel:#171009;
-    --panel-2:#1f1610;
-    --bronze:#5a3d1e;
-    --bronze-light:#8a642f;
-    --gold:#c9a44c;
-    --gold-bright:#e8c874;
+    --void:#050302;
+    --panel:#120c07;
+    --leather:#221507;
+    --bronze:#4a3218;
+    --bronze-light:#7d5a28;
+    --gold:#c9a227;
+    --gold-bright:#f0c65e;
     --parchment:#d9cdb3;
-    --parchment-dim:#a89a80;
-    --blood:#6e1f1f;
-    --unique:#d9791f;
-    --unique-glow:#ffab4a;
+    --parchment-dim:#9c8e74;
+    --unique:#e2711d;   /* orange = unique-tier items in D2 */
+    --rare:#c9a227;      /* gold = rare */
+    --set:#3f9c4a;        /* green = set items */
+    --magic:#5d7fd1;      /* blue = magic items */
+    --orb-red:#7a0f0f;
+    --orb-blue:#0f3f7a;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:
-      radial-gradient(ellipse at top, #1a120b 0%, var(--void) 60%);
+      radial-gradient(ellipse 70% 50% at 50% 0%, #241608 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 100%, #1a0f05 0%, transparent 55%),
+      var(--void);
     color:var(--parchment);
     font-family:'EB Garamond', serif;
     font-size:18px;
     line-height:1.6;
   }
-  h1,h2,h3,.rune{
-    font-family:'Cinzel Decorative', serif;
-    color:var(--gold-bright);
-    letter-spacing:.03em;
-    margin:0;
-  }
   a{color:inherit;text-decoration:none;}
+  h2,h3{font-family:'Cinzel',serif; margin:0; letter-spacing:.04em;}
 
-  .ornate-border{
-    border:2px solid var(--bronze-light);
+  /* --- socket divider, the little row of studs between sections --- */
+  .sockets{display:flex;justify-content:center;gap:14px;margin:0 0 28px;}
+  .sockets span{
+    width:9px;height:9px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #4a3218, #0a0603 75%);
+    border:1px solid var(--bronze-light);
+    box-shadow:0 0 4px rgba(201,162,39,.35);
+  }
+
+  .item-frame{
+    border:1px solid var(--bronze-light);
     box-shadow:
       0 0 0 1px #000,
       0 0 0 5px var(--panel),
       0 0 0 6px var(--bronze),
-      inset 0 0 30px rgba(0,0,0,.6);
-    background:var(--panel);
+      inset 0 0 24px rgba(0,0,0,.65);
+    background:linear-gradient(180deg, var(--panel), var(--leather));
   }
 
+  /* --- hero --- */
   header{
     max-width:900px;
     margin:0 auto;
-    padding:70px 24px 50px;
+    padding:70px 24px 40px;
     text-align:center;
+    position:relative;
   }
-  .sigil{
-    width:64px;height:64px;margin:0 auto 22px;
-    border:2px solid var(--gold);
+  .crest{
+    width:70px;height:70px;margin:0 auto 20px;
     border-radius:50%;
+    border:2px solid var(--gold);
+    background:radial-gradient(circle, var(--bronze) 0%, var(--panel) 70%);
+    box-shadow:0 0 22px rgba(201,162,39,.4), inset 0 0 10px #000;
     display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(circle, var(--bronze) 0%, var(--panel) 75%);
-    box-shadow:0 0 18px rgba(201,164,76,.35);
-    font-family:'Cinzel Decorative',serif;
-    color:var(--gold-bright);
-    font-size:26px;
   }
-  header h1{font-size:clamp(2.2rem, 6vw, 3.4rem);}
+  .crest svg{width:34px;height:34px;fill:var(--gold-bright);}
+  header h1{
+    font-family:'UnifrakturMaguntia', serif;
+    font-weight:400;
+    font-size:clamp(2.6rem, 8vw, 4.4rem);
+    color:var(--gold-bright);
+    text-shadow:0 0 18px rgba(226,113,29,.35), 0 2px 0 #000;
+    margin:0;
+  }
   header p.tagline{
     color:var(--parchment-dim);
     font-style:italic;
-    margin-top:14px;
+    margin-top:16px;
     font-size:1.15rem;
   }
-  .cta-row{
-    margin-top:34px;
-    display:flex;
-    gap:16px;
-    justify-content:center;
-    flex-wrap:wrap;
+  .orb-row{
+    display:flex;align-items:center;justify-content:center;gap:30px;
+    margin-top:36px;
   }
-
+  .orb{
+    width:56px;height:56px;border-radius:50%;
+    border:2px solid var(--bronze-light);
+    flex-shrink:0;
+  }
+  .orb.red{background:radial-gradient(circle at 40% 30%, #d84a2a, var(--orb-red) 70%);box-shadow:0 0 14px rgba(216,74,42,.5);}
+  .orb.blue{background:radial-gradient(circle at 40% 30%, #4a8fd8, var(--orb-blue) 70%);box-shadow:0 0 14px rgba(74,143,216,.5);}
+  .cta-stack{display:flex;flex-direction:column;gap:14px;align-items:center;}
   .btn{
     display:inline-block;
-    padding:13px 30px;
-    font-family:'Cinzel Decorative',serif;
+    padding:13px 34px;
+    font-family:'Cinzel',serif;
+    font-weight:600;
     font-size:.85rem;
     letter-spacing:.08em;
     border:1px solid var(--bronze-light);
-    background:linear-gradient(180deg,#241a10,#140d08);
-    color:var(--parchment);
-    cursor:pointer;
-    position:relative;
-    transition:box-shadow .25s ease, color .25s ease, border-color .25s ease;
+    background:linear-gradient(180deg,#2a1d10,#140d08);
+    color:var(--gold-bright);
+    transition:box-shadow .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;
   }
   .btn:hover, .btn:focus-visible{
-    color:var(--unique-glow);
+    color:#fff;
     border-color:var(--unique);
-    box-shadow:0 0 14px rgba(217,121,31,.55), inset 0 0 10px rgba(217,121,31,.15);
+    box-shadow:0 0 16px rgba(226,113,29,.6), inset 0 0 10px rgba(226,113,29,.2);
+    transform:translateY(-1px);
     outline:none;
   }
-  .btn.primary{
-    border-color:var(--gold);
-    color:var(--gold-bright);
-  }
-  .btn.primary:hover, .btn.primary:focus-visible{
-    color:var(--unique-glow);
-    border-color:var(--unique);
-  }
 
-  section{max-width:1000px;margin:0 auto;padding:10px 24px 70px;}
-  .section-head{
-    text-align:center;
-    margin-bottom:36px;
-  }
-  .section-head h2{font-size:1.7rem;}
+  section{max-width:1020px;margin:0 auto;padding:20px 24px 60px;}
+  .section-head{text-align:center;margin-bottom:30px;}
+  .section-head h2{font-size:1.6rem;color:var(--gold-bright);}
   .section-head .rule{
-    width:80px;height:2px;
+    width:90px;height:2px;
     background:linear-gradient(90deg, transparent, var(--gold), transparent);
     margin:14px auto 0;
   }
 
-  /* Realms grid - skill-tree style nodes */
-  .realms{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
-    gap:20px;
-  }
+  /* --- realms: real links, rarity-coded borders --- */
+  .realms{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:20px;}
   .realm{
-    padding:22px 18px;
+    padding:24px 18px;
     text-align:center;
+    display:block;
+    cursor:pointer;
     transition:transform .2s ease, box-shadow .25s ease;
+    --rarity: var(--rare);
   }
-  .realm:hover{
+  .realm:hover, .realm:focus-visible{
     transform:translateY(-4px);
     box-shadow:
-      0 0 0 1px #000,
-      0 0 0 5px var(--panel),
-      0 0 0 6px var(--unique),
-      0 0 20px rgba(217,121,31,.35);
+      0 0 0 1px #000, 0 0 0 5px var(--panel), 0 0 0 6px var(--rarity),
+      0 0 22px var(--rarity);
+    outline:none;
   }
-  .realm .icon{font-size:1.8rem;margin-bottom:10px;display:block;}
-  .realm h3{font-size:1.05rem;color:var(--parchment);font-family:'EB Garamond',serif;font-weight:600;}
-  .realm p{color:var(--parchment-dim);font-size:.92rem;margin:8px 0 0;}
+  .realm .badge{
+    width:52px;height:52px;margin:0 auto 12px;
+    border-radius:50%;
+    border:2px solid var(--rarity);
+    background:radial-gradient(circle, #1c1208, #0a0603 70%);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .realm .badge svg{width:26px;height:26px;fill:var(--rarity);}
+  .realm h3{font-size:1.02rem;color:var(--parchment);font-family:'EB Garamond',serif;font-weight:600;}
+  .realm .rarity-label{
+    display:block;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em;
+    color:var(--rarity); margin-top:6px;
+  }
+  .realm p{color:var(--parchment-dim);font-size:.9rem;margin:8px 0 0;}
+  .realm.unique{--rarity: var(--unique);}
+  .realm.rare{--rarity: var(--rare);}
+  .realm.set{--rarity: var(--set);}
+  .realm.magic{--rarity: var(--magic);}
 
-  /* Video shelf - inventory slots */
-  .shelf{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
-    gap:18px;
+  /* --- chronicles: honest placeholders --- */
+  .shelf{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px,1fr));gap:18px;}
+  .item-card{padding:22px;display:flex;flex-direction:column;gap:10px;}
+  .item-card .slot-icon{font-size:.7rem;letter-spacing:.1em;font-family:'Cinzel',serif;color:var(--parchment-dim);}
+  .item-card h3{font-family:'EB Garamond',serif;font-weight:600;font-size:1.1rem;color:var(--parchment-dim);font-style:italic;}
+  .item-card p{color:var(--parchment-dim);font-size:.92rem;margin:0;}
+  .placeholder-note{
+    text-align:center;color:var(--parchment-dim);font-style:italic;font-size:.95rem;margin-top:24px;
   }
-  .item-card{
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .item-card .rarity{
-    font-size:.72rem;
-    letter-spacing:.1em;
-    color:var(--unique);
-    font-family:'Cinzel Decorative',serif;
-  }
-  .item-card h3{
-    font-family:'EB Garamond',serif;
-    font-weight:600;
-    font-size:1.15rem;
-    color:var(--gold-bright);
-  }
-  .item-card p{color:var(--parchment-dim);font-size:.95rem;margin:0;}
-  .item-card .watch{
-    margin-top:auto;
-    font-size:.85rem;
-    color:var(--parchment-dim);
-    border-top:1px solid var(--bronze);
-    padding-top:10px;
-  }
-  .item-card:hover .watch{color:var(--unique-glow);}
 
-  footer{
-    text-align:center;
-    padding:50px 24px 70px;
-    color:var(--parchment-dim);
-    font-size:.9rem;
-  }
-  footer .rule{
-    width:120px;height:1px;
-    background:var(--bronze-light);
-    margin:0 auto 24px;
-  }
-  footer a:hover{color:var(--unique-glow);}
+  footer{text-align:center;padding:50px 24px 70px;color:var(--parchment-dim);font-size:.9rem;}
+  footer p.rune{font-family:'Cinzel',serif;color:var(--gold);letter-spacing:.1em;}
+  footer a:hover{color:var(--unique);}
 
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
-  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="sigil">☩</div>
+  <div class="crest">
+    <!-- simple rune-like sigil, not an emoji -->
+    <svg viewBox="0 0 24 24"><path d="M12 1 L15 9 L23 9 L16.5 14 L19 22 L12 17 L5 22 L7.5 14 L1 9 L9 9 Z"/></svg>
+  </div>
   <h1>The Watchers Guild</h1>
   <p class="tagline">Reviews, recaps, and reckonings from the realms of screen and story.</p>
-  <div class="cta-row">
-    <!-- Replace href with your real channel URL -->
-    <a class="btn primary" href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">Join the Guild</a>
-    <a class="btn" href="#chronicles">Latest Chronicles</a>
+
+  <div class="orb-row">
+    <div class="orb red" aria-hidden="true"></div>
+    <div class="cta-stack">
+      <!-- Replace with your real channel URL -->
+      <a class="btn" href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">Join the Guild</a>
+      <a class="btn" href="#chronicles">Latest Chronicles</a>
+    </div>
+    <div class="orb blue" aria-hidden="true"></div>
   </div>
 </header>
+
+<div class="sockets"><span></span><span></span><span></span><span></span><span></span></div>
 
 <section id="realms">
   <div class="section-head">
@@ -217,28 +214,35 @@
     <div class="rule"></div>
   </div>
   <div class="realms">
-    <div class="realm ornate-border">
-      <span class="icon">⚔</span>
+    <!-- Each realm links to a channel-scoped YouTube search. Swap the query or URL for a real playlist link once you have one. -->
+    <a class="realm item-frame unique" href="https://www.youtube.com/@TheWatchersGuild/search?query=Star%20Wars" target="_blank" rel="noopener">
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M3 21 L21 3 L19 1 L1 19 Z M17 5 L19 7"/></svg></span>
       <h3>Star Wars</h3>
+      <span class="rarity-label">Unique</span>
       <p>A galaxy picked apart, one hot take at a time.</p>
-    </div>
-    <div class="realm ornate-border">
-      <span class="icon">🖖</span>
+    </a>
+    <a class="realm item-frame rare" href="https://www.youtube.com/@TheWatchersGuild/search?query=Star%20Trek" target="_blank" rel="noopener">
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M12 2 L20 8 L20 16 L12 22 L4 16 L4 8 Z M12 8 L12 22 M4 8 L12 14 L20 8"/></svg></span>
       <h3>Star Trek</h3>
+      <span class="rarity-label">Rare</span>
       <p>Boldly critiquing what no fan has critiqued enough.</p>
-    </div>
-    <div class="realm ornate-border">
-      <span class="icon">🐉</span>
+    </a>
+    <a class="realm item-frame set" href="https://www.youtube.com/@TheWatchersGuild/search?query=House%20of%20the%20Dragon" target="_blank" rel="noopener">
+      <span class="badge"><svg viewBox="0 0 24 24"><path d="M2 18 Q6 6 12 12 Q18 6 22 18 Q14 12 12 18 Q10 12 2 18 Z"/></svg></span>
       <h3>House of the Dragon</h3>
+      <span class="rarity-label">Set Item</span>
       <p>Dragons, dynasties, and the occasional disappointment.</p>
-    </div>
-    <div class="realm ornate-border">
-      <span class="icon">🌆</span>
+    </a>
+    <a class="realm item-frame magic" href="https://www.youtube.com/@TheWatchersGuild/search?query=Dead%20City" target="_blank" rel="noopener">
+      <span class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13 L9 20 M15 13 L15 20 M7 6 L5 3 M17 6 L19 3"/></svg></span>
       <h3>Dead City</h3>
+      <span class="rarity-label">Magic</span>
       <p>Walking through the wreckage of a franchise, on foot.</p>
-    </div>
+    </a>
   </div>
 </section>
+
+<div class="sockets"><span></span><span></span><span></span><span></span><span></span></div>
 
 <section id="chronicles">
   <div class="section-head">
@@ -246,29 +250,26 @@
     <div class="rule"></div>
   </div>
   <div class="shelf">
-    <div class="item-card ornate-border">
-      <span class="rarity">Weekly Recap</span>
-      <h3>Starfleet Academy — This Week's Ruling</h3>
-      <p>The flagship recap series, back with a fresh verdict.</p>
-      <span class="watch">Watch on YouTube →</span>
+    <div class="item-card item-frame">
+      <span class="slot-icon">EMPTY SLOT</span>
+      <h3>— Your latest video title —</h3>
+      <p>Swap this card for your real upload: title, one-line description, and a link.</p>
     </div>
-    <div class="item-card ornate-border">
-      <span class="rarity">Review</span>
-      <h3>Rings of Power — Season Watch</h3>
-      <p>Middle-earth, reassessed with no patience for filler.</p>
-      <span class="watch">Watch on YouTube →</span>
+    <div class="item-card item-frame">
+      <span class="slot-icon">EMPTY SLOT</span>
+      <h3>— Your latest video title —</h3>
+      <p>Swap this card for your real upload: title, one-line description, and a link.</p>
     </div>
-    <div class="item-card ornate-border">
-      <span class="rarity">Reaction</span>
-      <h3>What The Discourse Got Wrong</h3>
-      <p>Reviewing the reviews — where the takes get taken apart.</p>
-      <span class="watch">Watch on YouTube →</span>
+    <div class="item-card item-frame">
+      <span class="slot-icon">EMPTY SLOT</span>
+      <h3>— Your latest video title —</h3>
+      <p>Swap this card for your real upload: title, one-line description, and a link.</p>
     </div>
   </div>
+  <p class="placeholder-note">These are placeholders — send me your real video titles/links and I'll drop them in, or I can wire this section to auto-pull your latest uploads.</p>
 </section>
 
 <footer>
-  <div class="rule"></div>
   <p class="rune">THE WATCHERS GUILD</p>
   <p><a href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">YouTube</a> &nbsp;·&nbsp; <a href="#">Twitter / X</a> &nbsp;·&nbsp; <a href="#">Discord</a></p>
 </footer>
