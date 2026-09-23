@@ -22,6 +22,8 @@
     --rare:#c9a227;
     --set:#3f9c4a;
     --magic:#5d7fd1;
+    --arcane:#a54fd1;
+    --teal:#28b8b0;
     --orb-red:#7a0f0f;
     --orb-blue:#0f3f7a;
   }
@@ -37,8 +39,10 @@
     line-height:1.6;
     background-color:var(--void);
     background-image:
-      radial-gradient(ellipse 60% 40% at 20% 0%, rgba(226,113,29,.07) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 15%, rgba(93,127,209,.05) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 35% at 12% 0%, rgba(226,113,29,.14) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 35% at 88% 10%, rgba(40,184,176,.09) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 45%, rgba(165,79,209,.06) 0%, transparent 65%),
+      radial-gradient(ellipse 55% 30% at 15% 90%, rgba(93,127,209,.08) 0%, transparent 60%),
       repeating-linear-gradient(0deg, rgba(201,162,39,.035) 0px, rgba(201,162,39,.035) 1px, transparent 1px, transparent 64px),
       repeating-linear-gradient(90deg, rgba(201,162,39,.035) 0px, rgba(201,162,39,.035) 1px, transparent 1px, transparent 64px),
       linear-gradient(180deg, #0c0805, #050302 20%, #050302 80%, #0a0603);
@@ -177,6 +181,28 @@
   .social-row svg{width:16px;height:16px;fill:var(--parchment-dim);}
   .social-row a:hover svg{fill:var(--unique);}
 
+  /* --- floating music player --- */
+  .music-player{
+    position:fixed; bottom:22px; right:22px; z-index:20;
+    display:flex; align-items:center; gap:12px;
+    padding:10px 16px;
+    border:1px solid var(--bronze-light);
+    background:linear-gradient(180deg, var(--panel), var(--leather));
+    box-shadow:0 0 0 1px #000, 0 0 18px rgba(0,0,0,.6);
+    border-radius:30px;
+  }
+  .music-player button{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    border:1px solid var(--gold);
+    background:radial-gradient(circle, var(--bronze), var(--panel) 75%);
+    color:var(--gold-bright); cursor:pointer; font-size:.9rem;
+    display:flex;align-items:center;justify-content:center;
+    transition:box-shadow .2s;
+  }
+  .music-player button:hover{box-shadow:0 0 10px rgba(226,113,29,.6);}
+  .music-player .track{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.05em;color:var(--parchment-dim);max-width:140px;}
+  @media (max-width:560px){ .music-player .track{display:none;} }
+
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
 </head>
@@ -188,6 +214,8 @@
     <li><a href="#coverage">Coverage</a></li>
     <li><a href="#watchlist">Watch List</a></li>
     <li><a href="#about">About</a></li>
+    <!-- Replace with Fresh Crit's real channel URL -->
+    <li><a href="https://www.youtube.com/@FreshCrit" target="_blank" rel="noopener" style="color:var(--teal);">Fresh Crit</a></li>
     <li><a href="https://www.youtube.com/@TheWatchersGuild" target="_blank" rel="noopener">YouTube</a></li>
   </ul>
 </nav>
@@ -223,16 +251,16 @@
       <p>Boldly critiquing what no fan has critiqued enough.</p>
     </a>
     <!-- Duplicate the block above for each real thing you cover. Two open slots below as a placeholder — tell me what to put here. -->
-    <div class="realm item-frame empty">
+    <div class="realm item-frame empty" style="--rarity:var(--teal);">
       <span class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></span>
       <h3>— Open Slot —</h3>
-      <span class="rarity-label">Add a category</span>
+      <span class="rarity-label" style="color:var(--teal);">Add a category</span>
       <p>Tell me what else you cover and I'll fill this in.</p>
     </div>
-    <div class="realm item-frame empty">
+    <div class="realm item-frame empty" style="--rarity:var(--arcane);">
       <span class="badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></span>
       <h3>— Open Slot —</h3>
-      <span class="rarity-label">Add a category</span>
+      <span class="rarity-label" style="color:var(--arcane);">Add a category</span>
       <p>Tell me what else you cover and I'll fill this in.</p>
     </div>
   </div>
@@ -303,6 +331,31 @@
     </a>
   </div>
 </footer>
+
+<!-- Floating ambient music player. Replace the src below with a real hosted audio file URL (mp3),
+     e.g. one you upload alongside index.html in your repo, or link to a track you have rights to use. -->
+<div class="music-player">
+  <button id="playBtn" aria-label="Play ambient music">▶</button>
+  <span class="track" id="trackLabel">Ambient theme — add a track</span>
+  <audio id="bgAudio" loop preload="none">
+    <source src="theme.mp3" type="audio/mpeg">
+  </audio>
+</div>
+<script>
+  const btn = document.getElementById('playBtn');
+  const audio = document.getElementById('bgAudio');
+  btn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().catch(() => {
+        document.getElementById('trackLabel').textContent = 'Add theme.mp3 to your repo first';
+      });
+      btn.textContent = '❚❚';
+    } else {
+      audio.pause();
+      btn.textContent = '▶';
+    }
+  });
+</script>
 
 </body>
 </html>
